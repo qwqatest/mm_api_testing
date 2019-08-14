@@ -16,7 +16,7 @@ def login_fixture():
 
 # Get /user-profiles
 def test_get_user_profiles_with_id(login_fixture):
-    response = api.user_profiles_with_id()
+    response, last_visit_time = api.user_profiles_with_id()
     print(response.url)
     assert response.status_code == 200
     # print(json.dumps(response.json(), indent=4))

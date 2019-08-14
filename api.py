@@ -5,12 +5,9 @@ from urls import *
 from keys import *
 
 
-# class Api:
-# token_value = "zx"
 auth = {'Authorization': 'Bearer ' + str()}
 
 
-    # @staticmethod
 def login():
     global token_value
     global user_id
@@ -21,20 +18,18 @@ def login():
 
 #---------------------------------------------UserProfile------------------------------------------------------
 
-    # @staticmethod
+
 def user_profiles_with_id():
-    # global auth
     # auth = {'Authorization': 'Bearer ' + token_value[0]}
-    # headers=auth
-    # "expand": "user",
     params = {"expand": "Qw1", "access-token": token_value[0]}
     resp = requests.get(BASE_URL + api_version_slug + user_profiles_slug + str(user_id[0]), params=params)
-    return resp
+    last_visit_time = jsonpath.jsonpath(resp.json(), 'last_visit')
+    print(last_visit_time)
+    return resp, last_visit_time
 
 
-    # @staticmethod
+
 def user_profiles_trackers():
-    # global auth
     # auth = {'Authorization': 'Bearer ' + token_value[0]}
     params = {"days": "100", "day": "2018-12-31", "access-token": token_value}
     resp = requests.get(BASE_URL + api_version_slug + user_profiles_trackers_slug, params=params)
