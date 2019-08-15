@@ -2,9 +2,10 @@ import json
 import requests
 import jsonpath
 import datetime
-from datetime import timedelta
+
 from urls import *
 from keys import *
+
 
 
 def login():
@@ -27,41 +28,35 @@ def user_profiles_with_id():
 
 
 def put_user_profiles():
-
-    # data = json.loads(y)
+    # Changing appointment string to datetime format
     datetime_str = next_appointment[0]
     datetime_object = datetime.datetime.strptime(datetime_str, '%Y-%m-%d')
+    # Adding 1 day to initial date
     new_appointment_datetime = datetime_object + datetime.timedelta(days=1)
-    new_appointment = datetime.datetime.strftime(new_appointment_datetime, '%y-%m-%d')
+    # Changing datetime format back to string
+    new_appointment = datetime.datetime.strftime(new_appointment_datetime, '%Y-%m-%d')
+    # Inserting new appointment date to dictionary in the keys.py file
+    data.update({"next_appointment": new_appointment})
+
     params = {"access-token": token_value[0]}
-    data = {
-        "achievements_score": 0,
-        "avatar_base_url": "",
-        "avatar_path": "",
-        "condition_id": 1,
-        "date_of_birth": new_appointment,
-        "default": "",
-        "device_token": "",
-        "device_type": "apns",
-        "doctor_id": 1735,
-        "firstname": "Qw1",
-        "gender": 1,
-        "lastname": "Qw1Dev",
-        "locale": "en-US",
-        "middlename": "",
-        "next_appointment": "",
-        "notification_time": "",
-        "picture": "",
-        "user_id": 1398,
-        "latitude": 49.996924489242,
-        "longitude": 36.22787423917
-    }
     resp = requests.put(BASE_URL + api_version_slug + user_profiles_slug + str(user_id[0]), data, params=params)
     return resp
 
 
 def user_profiles_trackers():
-    # auth = {'Authorization': 'Bearer ' + token_value[0]}
     params = {"days": "100", "day": "2018-12-31", "access-token": token_value}
     resp = requests.get(BASE_URL + api_version_slug + user_profiles_trackers_slug, params=params)
+    return resp
+
+
+def user_profiles_avatars():
+    params = {"access-token": token_value[0]}
+    resp = requests.get(BASE_URL + api_version_slug + user_profiles_avatars_slug, params=params)
+    json_response = json.loads(resp.text)
+    woman_avatars = jsonpath.jsonpath(json_response, 'paths.woman')
+
+    woman1_avatar = json_response[1][0]
+    # print(woman_avatars[0])
+    # print(woman1_avatar.index('img/avatars/woman1.png'))
+    print(woman1_avatar[0])
     return resp
