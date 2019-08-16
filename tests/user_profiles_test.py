@@ -2,7 +2,6 @@ import pytest
 import api
 import json
 
-
 @pytest.fixture(scope="module")
 def login_fixture():
     resp, user_id, token_value = api.login()
@@ -47,10 +46,10 @@ def test_get_user_profiles_avatars(login_fixture):
 
 def test_get_user_profiles_replies(login_fixture):
     response = api.user_profiles_replies()
-    # print(response.url)
     assert response.status_code == 200
 
 
 def test_get_user_profiles_reset_replies(login_fixture):
     response = api.user_profiles_reset_replies()
     assert response.status_code == 200
+    # print(response.url)

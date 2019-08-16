@@ -15,11 +15,52 @@ def login():
     user_id = jsonpath.jsonpath(resp.json(), 'profile.user_id')
     return resp, user_id, token_value
 
+# ---------------------------------------------Statistics-------------------------------------------------------
+
+
+def statistics_all_stats():
+    params = {"to": "2019-05-30", "from": "2018-12-31", "access-token": token_value}
+    resp = requests.get(BASE_URL + api_version_slug + statistics_all_stats_slug, params=params)
+    # Getting number of total days from response
+    json_response = json.loads(resp.text)
+    total_days = jsonpath.jsonpath(json_response, 'summary.total_count_days')
+    return resp, total_days
+
+
+def statistics_charts():
+    params = {"from": "2018-12-31", "to": "2019-05-30", "access-token": token_value}
+    resp = requests.get(BASE_URL + api_version_slug + statistics_charts_slug, params=params)
+    # Getting number of total headaches from response
+    json_response = json.loads(resp.text)
+    total_headaches = jsonpath.jsonpath(json_response, 'summary.total_headaches_count')
+    return resp, total_headaches
+
+
+def statistics_for_doctor():
+    params = {"user_id": user_id[0], "from": "2018-12-31", "day": "2019-01-31", "days": "30", "access-token": token_value}
+    resp = requests.get(BASE_URL + api_version_slug + statistics_for_doctor_slug, params=params)
+    return resp
+
+
+def statistics_weather_charts():
+    params = {"from": "2018-12-31", "to": "2019-05-30", "access-token": token_value}
+    resp = requests.get(BASE_URL + api_version_slug + statistics_weather_charts_slug, params=params)
+    return resp
+
+
+def statistics_day():
+    params = {"date": "2018-12-31", "access-token": token_value}
+    resp = requests.get(BASE_URL + api_version_slug + statistics_day_slug, params=params)
+    # Getting patient_id from response
+    json_response = json.loads(resp.text)
+    patient_id = jsonpath.jsonpath(json_response, 'headaches[0].patient_id')
+    return resp, patient_id
 
 # ---------------------------------------------UserProfile------------------------------------------------------
+
+
 def user_profiles_with_id():
     global next_appointment
-    # auth = {'Authorization': 'Bearer ' + token_value[0]}
     params = {"expand": "Qw1", "access-token": token_value[0]}
     resp = requests.get(BASE_URL + api_version_slug + user_profiles_slug + str(user_id[0]), params=params)
     next_appointment = jsonpath.jsonpath(resp.json(), 'next_appointment')
