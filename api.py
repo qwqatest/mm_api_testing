@@ -7,6 +7,16 @@ from urls import *
 from keys import *
 
 
+# ---------------------------------------------Register---------------------------------------------------------
+
+def photo_upload():
+    file = open('/Users/srsh/Desktop/Plato.jpg', 'r')
+    # json_input = file.read()
+    resp = requests.post(BASE_URL + api_version_slug + photo_upload_slug)
+
+
+
+
 def login():
     global token_value
     global user_id

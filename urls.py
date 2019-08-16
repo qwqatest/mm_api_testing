@@ -3,6 +3,10 @@ BASE_URL = "http://hm.ulik.info"
 api_version_slug = "/migraine/v2"
 login_slug = "/register/login"
 
+
+# ---------------------------------------------Register---------------------------------------------------------
+
+photo_upload_slug = '/photo/photo-upload?fileparam=avatar'
 # ---------------------------------------------Statistics-------------------------------------------------------
 
 statistics_all_stats_slug = '/statistics/all-stats'
