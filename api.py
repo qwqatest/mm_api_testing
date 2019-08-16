@@ -7,7 +7,6 @@ from urls import *
 from keys import *
 
 
-
 def login():
     global token_value
     global user_id
@@ -54,9 +53,18 @@ def user_profiles_avatars():
     resp = requests.get(BASE_URL + api_version_slug + user_profiles_avatars_slug, params=params)
     json_response = json.loads(resp.text)
     woman_avatars = jsonpath.jsonpath(json_response, 'paths.woman')
+    # Getting the first url from women's avatar list
+    woman1_avatar = woman_avatars[0][0]
+    return resp, woman1_avatar
 
-    woman1_avatar = json_response[1][0]
-    # print(woman_avatars[0])
-    # print(woman1_avatar.index('img/avatars/woman1.png'))
-    print(woman1_avatar[0])
+
+def user_profiles_replies():
+    params = {"access-token": token_value[0]}
+    resp = requests.get(BASE_URL + api_version_slug + user_profiles_replies_slug, params=params)
+    return resp
+
+
+def user_profiles_reset_replies():
+    params = {"access-token": token_value[0]}
+    resp = requests.get(BASE_URL + api_version_slug + user_profiles_reset_replies_slug, params=params)
     return resp
