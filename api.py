@@ -10,11 +10,17 @@ from keys import *
 # ---------------------------------------------Register---------------------------------------------------------
 
 def photo_upload():
-    file = open('/Users/srsh/Desktop/Plato.jpg', 'r')
+    params = {"access-token": token_value}
+    # f = open('/Users/srsh/Desktop/Plato.jpg', 'rb') #.read()
+    files = {'file': open('/Users/srsh/Desktop/Plato.jpg', 'rb')}
+    # headers = {"Content-Type": "multipart/form-data; boundary=alamofire.boundary.ad565e9fb86bc8ac", "Cookie": "_csrf=74d867b99bd3ce6cbfb9ad6326ba7c7d7ebddbacd088fa9f1d80c7cb154b4350a%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22wPgzcHmV1u2M1u1MMS5iGk_DPa-WWw3E%22%3B%7D",
+    #            "Accept": "*/*", "User-Agent": "HealthMonitor/4.0.3 (com.healthmonitor.HealthMonitor; build:5; iOS 12.4.0) Alamofire/4.8.1",
+    #            "Accept-Language": "en-US;q=1.0, ar-UA;q=0.9, en-UA;q=0.8, de-UA;q=0.7, uk-UA;q=0.6, ru-UA;q=0.5",
+    #             "Content-Length": "", "Accept-Encoding": "gzip;q=1.0, compress;q=0.5"}
     # json_input = file.read()
-    resp = requests.post(BASE_URL + api_version_slug + photo_upload_slug)
-
-
+    resp = requests.post(BASE_URL + api_version_slug + photo_upload_slug, files=files, params=params)   #headers=headers
+    # url = jsonpath.jsonpath(resp.json(), 'files[0].url')
+    return resp
 
 
 def login():
