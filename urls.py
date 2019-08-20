@@ -7,6 +7,8 @@ login_slug = "/register/login"
 # ---------------------------------------------Register---------------------------------------------------------
 
 photo_upload_slug = '/photo/photo-upload?fileparam=avatar'
+register_check_email_slug = '/register/check-email'
+register_navigator_token_slug = '/register/navigator-token'
 # ---------------------------------------------Statistics-------------------------------------------------------
 
 statistics_all_stats_slug = '/statistics/all-stats'
@@ -20,5 +22,5 @@ statistics_day_slug = '/statistics/day'
 user_profiles_slug = '/user-profiles/'
 user_profiles_trackers_slug = '/user-profiles/trackers'
 user_profiles_avatars_slug = '/user-profiles/avatars'
-user_profiles_replies_slug ='/user-profiles/new-replies'
-user_profiles_reset_replies_slug ='/user-profiles/reset-new-replies'
+user_profiles_replies_slug = '/user-profiles/new-replies'
+user_profiles_reset_replies_slug = '/user-profiles/reset-new-replies'

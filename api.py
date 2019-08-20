@@ -10,17 +10,32 @@ from keys import *
 # ---------------------------------------------Register---------------------------------------------------------
 
 def photo_upload():
-    params = {"access-token": token_value}
-    # f = open('/Users/srsh/Desktop/Plato.jpg', 'rb') #.read()
-    files = {'file': open('/Users/srsh/Desktop/Plato.jpg', 'rb')}
-    # headers = {"Content-Type": "multipart/form-data; boundary=alamofire.boundary.ad565e9fb86bc8ac", "Cookie": "_csrf=74d867b99bd3ce6cbfb9ad6326ba7c7d7ebddbacd088fa9f1d80c7cb154b4350a%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22wPgzcHmV1u2M1u1MMS5iGk_DPa-WWw3E%22%3B%7D",
-    #            "Accept": "*/*", "User-Agent": "HealthMonitor/4.0.3 (com.healthmonitor.HealthMonitor; build:5; iOS 12.4.0) Alamofire/4.8.1",
-    #            "Accept-Language": "en-US;q=1.0, ar-UA;q=0.9, en-UA;q=0.8, de-UA;q=0.7, uk-UA;q=0.6, ru-UA;q=0.5",
-    #             "Content-Length": "", "Accept-Encoding": "gzip;q=1.0, compress;q=0.5"}
-    # json_input = file.read()
-    resp = requests.post(BASE_URL + api_version_slug + photo_upload_slug, files=files, params=params)   #headers=headers
-    # url = jsonpath.jsonpath(resp.json(), 'files[0].url')
+    with open('Plato.jpg', 'rb') as f:
+        params = {"access-token": token_value}
+        resp = requests.post(BASE_URL + api_version_slug + photo_upload_slug, files={'avatar': ("Plato.jpg", f, "image/jpg")}, params=params,)
+
+    # f = open('/Users/srsh/Desktop/Plato.jpg', 'rb')
+    # params = {"access-token": token_value}
+    # files = {'avatar': ("Plato.jpg", f, "image/jpg")}
+    # resp = requests.post(BASE_URL + api_version_slug + photo_upload_slug, files=files, params=params)
+    delete_url = jsonpath.jsonpath(resp.json(), 'files[0].delete_url')
+    return resp, delete_url
+
+
+def delete_photo():
+    params = {"path": "1%2FLCKjYS4f6_1cZnK8My9djU7wo4CCPIQG.jpg", "access-token": token_value}
+    resp = requests.delete(
+        "http://hm.ulik.info/migraine/v2/photo/photo-delete",params=params)
     return resp
+
+
+def register_check_email():
+    params = {"email": "qwqatest+1@gmail.com", "access-token": token_value}
+    resp = requests.get(BASE_URL + api_version_slug + register_check_email_slug, params=params)
+    # Getting number of total days from response
+    json_response = json.loads(resp.text)
+    users_found = jsonpath.jsonpath(json_response, 'users_found')
+    return resp, users_found
 
 
 def login():
@@ -30,6 +45,16 @@ def login():
     token_value = jsonpath.jsonpath(resp.json(), 'access_token')
     user_id = jsonpath.jsonpath(resp.json(), 'profile.user_id')
     return resp, user_id, token_value
+
+
+def register_navigator_token():
+    params = {"email": "qwqatest+1@gmail.com", "access-token": token_value}
+    resp = requests.get(BASE_URL + api_version_slug + register_navigator_token_slug, params=params)
+    # Getting number of total days from response
+    # json_response = json.loads(resp.text)
+    # users_found = jsonpath.jsonpath(json_response, 'users_found')
+    return resp
+
 
 # ---------------------------------------------Statistics-------------------------------------------------------
 
