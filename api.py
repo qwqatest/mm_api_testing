@@ -10,10 +10,10 @@ from keys import *
 # ---------------------------------------------Register---------------------------------------------------------
 
 def photo_upload():
+    global delete_url
     with open('Plato.jpg', 'rb') as f:
         params = {"access-token": token_value}
         resp = requests.post(BASE_URL + api_version_slug + photo_upload_slug, files={'avatar': ("Plato.jpg", f, "image/jpg")}, params=params,)
-
     # f = open('/Users/srsh/Desktop/Plato.jpg', 'rb')
     # params = {"access-token": token_value}
     # files = {'avatar': ("Plato.jpg", f, "image/jpg")}
@@ -23,9 +23,9 @@ def photo_upload():
 
 
 def delete_photo():
-    params = {"path": "1%2FLCKjYS4f6_1cZnK8My9djU7wo4CCPIQG.jpg", "access-token": token_value}
-    resp = requests.delete(
-        "http://hm.ulik.info/migraine/v2/photo/photo-delete",params=params)
+    global delete_url
+    params = {"access-token": token_value}
+    resp = requests.delete(BASE_URL + delete_url, params=params)
     return resp
 
 

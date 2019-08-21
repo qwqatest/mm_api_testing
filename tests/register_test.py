@@ -15,13 +15,14 @@ def login_fixture():
 
 def test_photo_upload(login_fixture):
     response, delete_url = api.photo_upload()
-    # assert response.status_code == 200
-    print("qqq", response.text)
+    assert response.status_code == 200
+    print(response.text)
     print(delete_url[0])
 
 
 def test_delete_photo(login_fixture):
     response = api.delete_photo()
+    print(response.url)
     print(response.status_code)
     print(response.text)
 
