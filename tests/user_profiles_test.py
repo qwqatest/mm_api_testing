@@ -2,6 +2,7 @@ import pytest
 import api
 import json
 
+
 @pytest.fixture(scope="module")
 def login_fixture():
     resp, user_id, token_value = api.login()
@@ -22,11 +23,11 @@ def test_get_user_profile_with_id(login_fixture):
 
 
 def test_put_user_profile(login_fixture):
-    test_get_user_profile_with_id(login_fixture)
+    # test_get_user_profile_with_id(login_fixture)
     response = api.put_user_profiles()
-    # print(response.json())
+    print(response.json())
     assert response.status_code == 200
-    test_get_user_profile_with_id(login_fixture)
+    # test_get_user_profile_with_id(login_fixture)
 
 
 # # Get /user-profiles/trackers

@@ -10,7 +10,10 @@ from keys import *
 # ---------------------------------------------Register---------------------------------------------------------
 
 def photo_upload():
+    global base_url
+    global path
     global delete_url
+
     with open('Plato.jpg', 'rb') as f:
         params = {"access-token": token_value}
         resp = requests.post(BASE_URL + api_version_slug + photo_upload_slug, files={'avatar': ("Plato.jpg", f, "image/jpg")}, params=params,)
@@ -18,8 +21,11 @@ def photo_upload():
     # params = {"access-token": token_value}
     # files = {'avatar': ("Plato.jpg", f, "image/jpg")}
     # resp = requests.post(BASE_URL + api_version_slug + photo_upload_slug, files=files, params=params)
+    base_url = jsonpath.jsonpath(resp.json(), 'files[0].base_url')
+    path = jsonpath.jsonpath(resp.json(), 'files[0].path')
     delete_url = jsonpath.jsonpath(resp.json(), 'files[0].delete_url')
-    return resp, delete_url
+
+    return resp, base_url, path, delete_url
 
 
 def delete_photo():
@@ -102,13 +108,15 @@ def statistics_day():
 
 def user_profiles_with_id():
     global next_appointment
+    global user_profile_resp
     params = {"expand": "Qw1", "access-token": token_value[0]}
-    resp = requests.get(BASE_URL + api_version_slug + user_profiles_slug + str(user_id[0]), params=params)
-    next_appointment = jsonpath.jsonpath(resp.json(), 'next_appointment')
-    return resp, next_appointment
+    user_profile_resp = requests.get(BASE_URL + api_version_slug + user_profiles_slug + str(user_id[0]), params=params)
+    next_appointment = jsonpath.jsonpath(user_profile_resp.json(), 'next_appointment')
+    return user_profile_resp, next_appointment
 
 
 def put_user_profiles():
+    # user_profile_data = json.loads(user_profile_resp.text)
     # Changing appointment string to datetime format
     datetime_str = next_appointment[0]
     datetime_object = datetime.datetime.strptime(datetime_str, '%Y-%m-%d')
@@ -116,11 +124,18 @@ def put_user_profiles():
     new_appointment_datetime = datetime_object + datetime.timedelta(days=1)
     # Changing datetime format back to string
     new_appointment = datetime.datetime.strftime(new_appointment_datetime, '%Y-%m-%d')
-    # Inserting new appointment date to dictionary in the keys.py file
-    data.update({"next_appointment": new_appointment})
+    # Inserting new appointment date to the dictionary
+    # print(user_profile_data)
+    print(type(path[0]))
+    print(type(base_url[0]))
+    data = ({"avatar_base_url": base_url[0], "avatar_path": path[0], "next_appointment": new_appointment})
+    # user_profile_data.update({"next_appointment": new_appointment})
+    # user_profile_data.update({"avatar_base_url": base_url[0]})
+    print(data)
 
     params = {"access-token": token_value[0]}
     resp = requests.put(BASE_URL + api_version_slug + user_profiles_slug + str(user_id[0]), data, params=params)
+    print(resp.url)
     return resp
 
 
