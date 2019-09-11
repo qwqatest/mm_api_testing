@@ -22,12 +22,10 @@ def test_get_user_profile_with_id(login_fixture):
 
 
 def test_photo_upload(login_fixture):
-    response, base_url, path, delete_url = api.photo_upload()
+    response, picture, delete_url = api.photo_upload()
     assert response.status_code == 200
     # print(response.text)
-    print(path[0])
-    print(base_url[0])
-    print(delete_url[0])
+    # print(picture)
 
 
 def test_put_user_profile(login_fixture):
@@ -38,3 +36,8 @@ def test_put_user_profile(login_fixture):
     # test_get_user_profile_with_id(login_fixture)
 
 
+def test_delete_photo(login_fixture):
+    response = api.delete_photo()
+    print(response.url)
+    print(response.status_code)
+    print(response.text)

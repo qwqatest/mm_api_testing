@@ -10,8 +10,8 @@ from keys import *
 # ---------------------------------------------Register---------------------------------------------------------
 
 def photo_upload():
-    global base_url
-    global path
+    global picture
+    # global path
     global delete_url
 
     with open('Plato.jpg', 'rb') as f:
@@ -21,17 +21,20 @@ def photo_upload():
     # params = {"access-token": token_value}
     # files = {'avatar': ("Plato.jpg", f, "image/jpg")}
     # resp = requests.post(BASE_URL + api_version_slug + photo_upload_slug, files=files, params=params)
-    base_url = jsonpath.jsonpath(resp.json(), 'files[0].base_url')
-    path = jsonpath.jsonpath(resp.json(), 'files[0].path')
+    # picture = jsonpath.jsonpath(resp.json(), 'files[0][0]')
+    resp_json = json.loads(resp.text)
+    picture = resp_json['files'][0]
+    # base_url = jsonpath.jsonpath(resp.json(), 'files[0].base_url')
+    # path = jsonpath.jsonpath(resp.json(), 'files[0].path')
     delete_url = jsonpath.jsonpath(resp.json(), 'files[0].delete_url')
 
-    return resp, base_url, path, delete_url
+    return resp, picture, delete_url
 
 
 def delete_photo():
     global delete_url
-    params = {"access-token": token_value}
-    resp = requests.delete(BASE_URL + delete_url, params=params)
+    # params = {"access-token": token_value}
+    resp = requests.delete(BASE_URL + delete_url[0])
     return resp
 
 
@@ -125,10 +128,13 @@ def put_user_profiles():
     # Changing datetime format back to string
     new_appointment = datetime.datetime.strftime(new_appointment_datetime, '%Y-%m-%d')
     # Inserting new appointment date to the dictionary
-    # print(user_profile_data)
-    print(type(path[0]))
-    print(type(base_url[0]))
-    data = ({"avatar_base_url": base_url[0], "avatar_path": path[0], "next_appointment": new_appointment})
+    print(picture)
+    # print(type(path[0]))
+    # print(type(base_url[0]))
+
+    old_data = ({"picture": picture})
+    data = json.dumps(old_data)
+    # data = ({"avatar_base_url": base_url[0], "avatar_path": path[0], "next_appointment": new_appointment})
     # user_profile_data.update({"next_appointment": new_appointment})
     # user_profile_data.update({"avatar_base_url": base_url[0]})
     print(data)
